@@ -1,7 +1,7 @@
 <template>
   <div class="elevator-settings">
-    <input type="number" placeholder="Количество этажей" name="" id="">
-    <input type="number" placeholder="Количество лифтов" name="" id="">
+    <input type="number" placeholder="Количество этажей" name="" id="" v-model="starterParam.countFloors">
+    <input type="number" placeholder="Количество лифтов" name="" id="" v-model="starterParam.countElevators">
 
   </div>
 
@@ -10,10 +10,29 @@
 <script>
 export default {
   name: "ElevatorSettingsComponent",
+  beforeMount() {
+    this.$nextTick (() => {
+      this.$emit('actualSet', this.starterParam)
+    })
+  },
+
   data() {
     return {
-      countElevators: 1,
-      countFloors: 5
+      starterParam : {
+        countElevators: 1,
+        countFloors: 5
+      }
+    }
+  },
+
+  watch: {
+    starterParam: {
+      handler: function (newVal, oldVal) {
+        if (newVal) {
+       this.$emit('actualSet', this.starterParam)
+        }
+      },
+      deep: true
     }
   }
 }
